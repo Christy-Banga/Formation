@@ -3,7 +3,7 @@
         <template #header>
             <div class="flex justify-between items-center">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    Admin
+                    Users
                 </h2>
             </div>
 
@@ -40,20 +40,22 @@
             <table class="table-auto w-full">
                 <thead>
                     <tr>
-                        <th class="text-left pl-3">Name</th>
-                        <th class="text-left ">Role</th>
-                        <th class="text-left">Date</th>
+                        <th class="text-left ">Name</th>
+                        <th class="text-left">E-mail</th>
+                        <th class="text-left">Role</th>
+                        <th class="text-left pl-4">Date</th>
                         <th class="text-right pr-3">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(admin,index) in admins" v-bind:key="index" class="text-center hover:bg-gray-600 hover:text-gray-50">
-                        <td class="text-left capitalize py-3 pl-3">{{admin.roles[0].name}}</td>
-                        <td class="text-left capitalize py-3">{{admin.name}}</td>
-                        <td class="text-left py-3">{{admin.created_at}}</td>
+                    <tr v-for="(user,index) in users" v-bind:key="index" class="text-center hover:bg-gray-600 hover:text-gray-50">
+                        <td class="text-left capitalize py-3">{{user.name}}</td>
+                        <td class="text-left capitalize">{{user.email}}</td>
+                        <td class="text-left capitalize pr-6">{{user.roles[0].name}}</td>
+                        <td class="text-left py-3 pl-3">{{user.created_at}}</td>
                         <td class="py-3">
                             <div class="flex justify-end">
-                                <Link :href="(route('admin.admins.show',admin.id))" class="text-sm text-white uppercase bg-blue-500 mx-1 px-2 py-2 rounded-lg">Editer</Link>
+                                <Link :href="route('admin.users.show',user.id)" class="text-sm text-white uppercase bg-blue-500 mx-1 px-2 py-2 rounded-lg">Editer</Link>
                             </div>
                         </td>
                     </tr>
@@ -69,7 +71,7 @@
     import {Link} from '@inertiajs/inertia-vue3';
 
     export default {
-        props:['admins'],
+        props:['users'],
         components:{
             AdminLayout,
             Link

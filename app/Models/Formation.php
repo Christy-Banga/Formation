@@ -17,14 +17,14 @@ class Formation extends Model
 
     protected $appends = ['update'];
 
-    public static function boot()
+   /*  public static function boot()
     {
         parent::boot();
 
         self::creating(function($formation){
             $formation->user()->associate(auth()->user()->id);
         });
-    }
+    } */
 
     public function getUpdateAttribute()
     {

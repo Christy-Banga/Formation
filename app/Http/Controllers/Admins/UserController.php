@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class AdminController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,9 +17,9 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $admins = User::where('is_admin',1)->get();
-        return Inertia::render('Admin/Admins/Index',[
-            'admins' => $admins,
+        $users = User::where('is_admin',0)->get();
+        return Inertia::render('Admin/Users/Index',[
+            'users' => $users
         ]);
     }
 
@@ -47,13 +47,13 @@ class AdminController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\User $user
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
     public function show(User $user)
     {
-        return Inertia::render('Admin/Admins/Show',[
-            'admin' => $user,
+        return Inertia::render('Admin/Users/Show',[
+            'user' => $user,
             'allRoles' => Role::all()
         ]);
     }
@@ -61,10 +61,10 @@ class AdminController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user)
     {
         //
     }
@@ -73,30 +73,28 @@ class AdminController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User $user
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,User $user)
+    public function update(Request $request, User $user)
     {
         $role = Role::where('name', $request->roles[0][0]['name'])->first();
 
-        if($role->name != 'user' && $user->is_admin){
+        if($user->is_admin != 1 && $role->name != 'user'){
             $user->roles()->sync($role);
+            $user->update(['is_admin' => 1]);
         }
-        elseif($role->name = 'user' && $user->is_admin){
-            $user->roles()->sync($role);
-            $user->update(['is_admin' => 0]);
-        }
-        return redirect()->route('admin.admins.index')->with('warning',' Le role de '.ucwords($user->name). ' a été modifié');
+
+        return redirect()->route('admin.users.index')->with('warning',' L\'utilisateur '.ucwords($user->name). ' a été modifié');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
         //
     }

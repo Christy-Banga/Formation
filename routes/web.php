@@ -7,6 +7,7 @@ use Illuminate\Foundation\Application;
 use App\Http\Controllers\FormationController;
 use App\Http\Controllers\Admins\AdminDashboardController;
 use App\Http\Controllers\Admins\RoleController;
+use App\Http\Controllers\Admins\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,8 +39,6 @@ Route::group(['auth:sanctum', 'verified'], function(){
     Route::post('toggleProgress',[FormationController::class,'toggleProgress'])->name('formations.toggle');
     Route::post('/formations',[FormationController::class,'store'])->name('dashboard');
 
-
-
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
@@ -49,10 +48,10 @@ Route::prefix('admin')->middleware(['auth:sanctum','verified'])->name('admin.')-
     Route::get('dashboard', [AdminDashboardController::class,'index'])->name('dashboard');
 
     Route::resource('roles',RoleController::class);
+    Route::resource('admins',AdminController::class)->parameters([
+        'admins' => 'user'])->only('index','show','update');
+    Route::resource('users',UserController::class)->only('index','show','update');
 
-    Route::prefix('admins')->name('admins.')->group(function(){
-        Route::get('/',[AdminController::class,'index'])->name('index');
-    });
 
 });
 
