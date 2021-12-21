@@ -1,9 +1,12 @@
 <template>
     <app-layout title="Formation">
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Listes des formations
-            </h2>
+            <div class="flex justify-between items-center">
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                    Listes des formations
+                </h2>
+                <Link :href="route('dashboard')" class="bg-blue-700 px-2 p-2 hover:bg-blue-500 capitalize text-white font-bold rounded-lg">Ajouter</Link>
+            </div>
         </template>
 
         <div class="mx-8 py-3">
@@ -32,7 +35,7 @@
                 </div>
                 <div class="text-sm">{{ formation.description }}</div>
                 <div class="flex items-center justify-between">
-                    <Link :href="route('formations.show', {id: formation.id})" class="bg-green-700 text-white px-3 py-1 mt-3 inline-block hover:bg-green-600 rounded">Voir la formation</Link>
+                    <Link :href="route('formations.show', {id: formation.id})" class="bg-blue-700 text-white px-3 py-1 mt-3 inline-block hover:bg-blue-500 rounded">Voir la formation</Link>
                     <Link :href="route('formations.edit', {id: formation.id})" v-if="formation.update" class="bg-gray-700 text-white px-3 py-1 mt-3 inline-block hover:bg-gray-600 rounded">Modifier la formation</Link>
                 </div>
             </div>

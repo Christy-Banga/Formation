@@ -1,13 +1,14 @@
 <?php
 
-use App\Http\Controllers\Admins\AdminController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\FormationController;
-use App\Http\Controllers\Admins\AdminDashboardController;
 use App\Http\Controllers\Admins\RoleController;
 use App\Http\Controllers\Admins\UserController;
+use App\Http\Controllers\Admins\AdminController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Admins\AdminDashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,9 +38,9 @@ Route::group(['auth:sanctum', 'verified'], function(){
     Route::get('/formation/edit/{id}',[FormationController::class,'edit'])->name('formations.edit');
     Route::patch('/formation/{id}',[FormationController::class,'update'])->name('formations.update');
     Route::post('toggleProgress',[FormationController::class,'toggleProgress'])->name('formations.toggle');
-    Route::post('/formations',[FormationController::class,'store'])->name('dashboard');
+    Route::post('/formation',[FormationController::class,'store'])->name('dashboard');
 
-    Route::get('/dashboard', function () {
+    Route::get('/create', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 });
@@ -54,6 +55,17 @@ Route::prefix('admin')->middleware(['auth:sanctum','verified'])->name('admin.')-
 
 
 });
+
+
+Route::group(['middleware' => config('fortify.middleware', ['web'])], function () {
+    $limiter = config('fortify.limiters.login');
+    Route::post('/login', [AuthenticatedSessionController::class, 'store'])
+        ->middleware(array_filter([
+            'guest:'.config('fortify.guard'),
+            $limiter ? 'throttle:'.$limiter : null,
+        ]));
+});
+
 
 
 

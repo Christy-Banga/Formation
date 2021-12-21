@@ -2,14 +2,14 @@
     <app-layout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Dashboard
+                Ajouter une formation
             </h2>
         </template>
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="w-full">
-                    <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" @submit.prevent="form.post('/formations')">
+                    <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" @submit.prevent="form.post('/formation')">
                         <div class="mb-4">
                             <label class="block text-gray-700 text-sm font-bold mb-2" for="title">
                                 Titre de la formation
@@ -50,13 +50,17 @@
                         </div>
 
 
-                            <button class="bg-green-500 hover:bg-green-700 rounded py-2 px-4 my-3 font-bold text-white" v-if="form.episodes.length < 15" @click.prevent="add">+</button>
-                            <button class="bg-red-500 hover:bg-red-700 rounded py-2 ml-2 px-3 my-3 text-white" v-if="form.episodes.length > 1" @click.prevent="remove">🗑️</button>
+                        <button class="bg-green-500 hover:bg-green-700 rounded py-2 px-4 my-3 font-bold text-white" v-if="form.episodes.length < 15" @click.prevent="add">+</button>
+                        <button class="bg-red-500 hover:bg-red-700 rounded py-2 ml-2 px-3 my-3 text-white" v-if="form.episodes.length > 1" @click.prevent="remove">🗑️</button>
 
+                        <div class="flex space-x-4">
+                            <div>
+                                <Link :href="route('formations.index')" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline block">Retour</Link>
+                            </div>
                             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline block" type="submit">
                                 Créer ma formation
                             </button>
-
+                        </div>
                     </form>
                 </div>
             </div>
@@ -68,10 +72,12 @@
     import { defineComponent } from 'vue'
     import AppLayout from '@/Layouts/AppLayout.vue'
     import { useForm } from '@inertiajs/inertia-vue3'
+    import {Link} from '@inertiajs/inertia-vue3';
 
     export default defineComponent({
         components: {
             AppLayout,
+            Link
         },
 
         setup () {
