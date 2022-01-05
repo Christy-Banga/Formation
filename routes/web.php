@@ -40,12 +40,12 @@ Route::group(['auth:sanctum', 'verified'], function(){
     Route::post('toggleProgress',[FormationController::class,'toggleProgress'])->name('formations.toggle');
     Route::post('/formation',[FormationController::class,'store'])->name('dashboard');
 
-    Route::get('/create', function () {
+    Route::get('create/formation', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 });
 
-Route::prefix('admin')->middleware(['auth:sanctum','verified'])->name('admin.')->group(function(){
+Route::prefix('admin')->middleware(['auth:sanctum','verified','can:accessAdmins'])->name('admin.')->group(function(){
     Route::get('dashboard', [AdminDashboardController::class,'index'])->name('dashboard');
 
     Route::resource('roles',RoleController::class);

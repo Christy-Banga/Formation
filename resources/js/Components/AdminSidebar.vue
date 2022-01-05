@@ -19,10 +19,10 @@
                 'text-gray-50 bg-gray-500' : 'hover:text-gray-50 hover:bg-gray-500'">Admins</Link>
                 <Link :href="route('admin.roles.index')" class="text-right capitalize border-t w-full
                 px-6 py-2" :class="route().current('admin.roles.*') ? 'text-gray-50 bg-gray-500':
-                'hover:text-gray-50 hover:bg-gray-500'">Roles</Link>
+                'hover:text-gray-50 hover:bg-gray-500'" v-if="$page.props.auth.can.accessRoles">Roles</Link>
                 <Link :href="route('admin.users.index')" class="text-right capitalize border-t w-full
                 px-6 py-2" :class="route().current('admin.users.*') ? 'text-gray-50 bg-gray-500':
-                'hover:text-gray-50 hover:bg-gray-500'">Users</Link>
+                'hover:text-gray-50 hover:bg-gray-500'" v-if="$page.props.auth.can.accessUsers">Users</Link>
             </div>
             <Link :href="route('dashboard')" class="flex justify-between items-center border-t px-6 py-2
             capitalize hover:bg-gray-500 hover:text-gray-50">

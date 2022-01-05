@@ -2,8 +2,12 @@
 
 namespace App\Providers;
 
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use App\Models\User;
+use App\Policies\RolesPolicy;
+use App\Policies\UsersPolicy;
+use App\Policies\AdminsPolicy;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -14,6 +18,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         'App\Models\Model' => 'App\Policies\ModelPolicy',
+        User::class => RolesPolicy::class,
     ];
 
     /**
@@ -28,5 +33,13 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('update-formation',function($formation){
             return $formation->user_id == auth()->user()->id;
         });
+        //access
+        Gate::define('accessRoles',[RolesPolicy::class, 'accessRoles']);
+        Gate::define('accessUsers',[UsersPolicy::class, 'accessUsers']);
+        Gate::define('accessAdmins',[AdminsPolicy::class, 'accessAdmins']);
+        //Manage
+        Gate::define('manageRoles',[RolesPolicy::class, 'manageRoles']);
+        Gate::define('manageUsers',[UsersPolicy::class, 'manageUsers']);
+        Gate::define('manageAdmins',[AdminsPolicy::class, 'manageAdmins']);
     }
 }
